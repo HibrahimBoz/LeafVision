@@ -1,6 +1,26 @@
 LeafVision Release Notes
 =======================
 
+v1.2.1 - 2026-09-19
+-------------------
+* [DUZELTME] Proje git ile versiyonlandi (once MATLAB prototipi, sonra hibrit mimari tek commit'te).
+* [DUZELTME] src/scripts/main.py, C++ tarafinin artik 7 asamali pipeline dict'i dondurdugu
+  guncel API ile uyumlu hale getirildi (eskiden tek goruntu bekleyip hata veriyordu).
+* [DUZELTME] src/scripts/test_ui.py bosstu; FastAPI servisini uctan uca test eden bir duman
+  testi ile dolduruldu.
+* [DUZELTME] OpenCV yolu artik CMakeLists.txt'te find_package(OpenCV) + OpenCV_DIR ortam
+  degiskeni, Python tarafinda ise OPENCV_BIN_DIR ortam degiskeni ile geceriz kilinabiliyor
+  (once tamamen hardcoded'di, baska makinede derleme/calisma imkansizdi).
+* [DUZELTME] server.py'deki /process endpoint'i artik istek basina benzersiz gecici dosya
+  adi kullaniyor (eskiden sabit "temp_process.jpg" eszamanli isteklerde birbirini eziyordu).
+* [TEMIZLIK] Kok dizindeki build/ ve out/ klasorleri, eski proje adindan (GoruntuIsleme)
+  kalma gecersiz CMake onbellekleriydi; silindi. Tek gecerli build agaci artik
+  src/core/out/build/x64-Debug (CMakeSettings.json'daki buildRoot ile tutarli).
+* [DUZELTME] env/ sanal ortami artik var olmayan bir Python 3.14 kurulumuna isaret
+  ediyordu; Python 3.13 ile yeniden olusturuldu.
+* [DUZELTME] leaf_vision.pyd guncel leaf_boundary.cpp kaynagina karsi yeniden derlendi
+  (onceki ikili birkac saat eskiydi).
+
 v1.2.0 - 2026-03-17
 -------------------
 * [GELİŞTİRME] MATLAB prototipinden C++ Core + Python API hibrit mimarisine geçiş tamamlandı.

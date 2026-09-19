@@ -83,10 +83,11 @@ fillResim = imfill(bw, 'holes');
             <div style="flex: 1;">
                 <h3 style="color: var(--primary);">C++ OpenCV Mantığı</h3>
                 <div class="code-block">
-cv::Mat justGreen = g_f - (r_f/2) - (b_f/2);<br>
-cv::threshold(justGreen, bw, 30, 255, ...);<br>
-cv::morphologyEx(bw, bw_cl, MORPH_CLOSE, se);<br>
-cv::drawContours(..., FILLED);
+cv::cvtColor(img, lab, COLOR_BGR2Lab); // A kanali<br>
+cv::Mat exg = 2*g_f - r_f - b_f;       // Excess Green<br>
+cv::threshold(mask, bw, 0, 255, OTSU);<br>
+cv::distanceTransform(bw, dist, L2, 5);<br>
+cv::watershed(img, markers);           // ust uste binen yapraklari ayir
                 </div>
             </div>
         </div>

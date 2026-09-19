@@ -23,3 +23,6 @@ extern/opencv_world4120.dll
 
 # Runtime temp files
 temp_process.jpg
+
+# Local tooling/session metadata
+.claude/

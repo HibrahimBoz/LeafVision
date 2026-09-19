@@ -16,13 +16,13 @@ Bu belge, projenin basit bir prototipten endüstriyel "Embodied AI" (Fizikselle�
   * Görüntü (matris) girer, işlem yapılır, sonuç çıkar. Sistem diske dokunmaz, sadece RAM üzerinde olabildiğince hızlı çalışır.
   * **Modern Yaklaşımlar:** HSV/LAB renk uzayı dönüşümleri, Otsu eşikleme, Canny Edge Detection ve üst üste binen yaprakları ayırmak için Watershed algoritması gibi sağlam (robust) açık kaynak teknikleri bu çekirdekte uygulanır.
 
-## 2. Faz: Test, Değerlendirme ve Prototipleme Katmanı (Tamamlandı)
+## 2. Faz: Test, Değerlendirme ve Prototipleme Katmanı (Kısmen Tamamlandı)
 * **Araçlar:** Python, Pybind11, Standart Veri Setleri
 * **Hedef:** Yazdığımız C++ motorunu test ortamında (Windows/Mac) hızlıca çalıştırmak ve performansını bilimsel olarak ölçmek.
 * **Detaylar:** 
-  * C++ kodu her defasında baştan derlenmeden, Python üzerinden çağrılarak algoritmaların doğruluğu (hata payları vb.) ölçülecek.
-  * **Veri Akışı:** C++ `cv::Mat` formatı ile Python `numpy.ndarray` arasında veri kopyalamadan (zero-copy) hızlı geçiş sağlanacak.
-  * **Test ve Metrikler:** CVPPP (yaprak segmentasyonu) ve PlantVillage (hastalık tespiti) veri setleri kullanılarak, SBD (Symmetric Best Dice) ve DiC (Difference in Count) metrikleriyle algoritma başarısı test edilecek.
+  * C++ kodu her defasında baştan derlenmeden, Python üzerinden çağrılarak algoritmaların doğruluğu (hata payları vb.) ölçülecek. **[TAMAMLANDI]** — `src/scripts/main.py` pipeline'ı görsel olarak calistirip inceliyor, `src/scripts/test_ui.py` FastAPI servisini uctan uca test ediyor.
+  * **Veri Akışı:** C++ `cv::Mat` formatı ile Python `numpy.ndarray` arasında veri kopyalamadan (zero-copy) hızlı geçiş sağlanacak. **[TAMAMLANDI]** — `mat_to_array` pybind11 `py::array_t` ile calisiyor.
+  * **Test ve Metrikler:** CVPPP (yaprak segmentasyonu) ve PlantVillage (hastalık tespiti) veri setleri kullanılarak, SBD (Symmetric Best Dice) ve DiC (Difference in Count) metrikleriyle algoritma başarısı test edilecek. **[HENUZ YAPILMADI]** — su an sadece tek bir ornek goruntu (assets/leaf.jpg) uzerinde manuel/duman testi var, bilimsel bir dogruluk olcumu yok.
 
 ## 3. Faz: Gömülü Sisteme Geçiş ve İletişim (API) (Şu Anki Aşama)
 * **Araçlar:** FastAPI (Python) veya C++ (Crow/cpp-httplib), Web Teknolojileri (HTML/JS veya Gradio)

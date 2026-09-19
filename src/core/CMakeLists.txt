@@ -6,16 +6,22 @@ set(CMAKE_CXX_STANDARD 17)
 # Yerel pybind11 kullanımı (Offline derleme için)
 add_subdirectory(../../extern/pybind11 extern/pybind11)
 
-# OpenCV kütüphanesini manuel tanımla (Sürüm uyumsuzluğu hatasını aşmak için)
-set(OpenCV_INCLUDE_DIRS "C:/Users/Halil/Downloads/Programs/opencv/build/include")
-set(OpenCV_LIBS "C:/Users/Halil/Downloads/Programs/opencv/build/x64/vc16/lib/opencv_world4120.lib")
+# OpenCV kurulum dizini: once ortam degiskeni, yoksa bu makinedeki
+# varsayilan yola dus (baska bir makinede -DOpenCV_DIR=... ile gecersiz kilinabilir)
+if(NOT OpenCV_DIR AND DEFINED ENV{OpenCV_DIR})
+  set(OpenCV_DIR "$ENV{OpenCV_DIR}")
+endif()
+if(NOT OpenCV_DIR)
+  set(OpenCV_DIR "C:/Users/Halil/Downloads/Programs/opencv/build" CACHE PATH "OpenCVConfig.cmake dizini")
+endif()
 
-include_directories(${OpenCV_INCLUDE_DIRS})
+find_package(OpenCV REQUIRED)
 
 # Python modülünü oluştur (İsmi: leaf_vision)
 pybind11_add_module(leaf_vision leaf_boundary.cpp)
 
 # OpenCV bağımlılıklarını modüle bağla
+target_include_directories(leaf_vision PRIVATE ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(leaf_vision PRIVATE ${OpenCV_LIBS})
 
 # Derleme sonrası dosyayı kök dizine kopyala (Python'un görebilmesi için)

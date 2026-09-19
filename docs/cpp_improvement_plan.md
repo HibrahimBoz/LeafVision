@@ -13,11 +13,13 @@ Yaptığım araştırmalarda AgriTech alanında öne çıkan teknikler:
 *   **Problem:** Mevcut RGB (justGreen) formülü, gölgeli alanları siyah veya toprak rengi olarak algılayıp yanlış kesimler yapabiliyor.
 *   **Düzeltme:** BGR -> LAB dönüşümü yapıldı ve 'A' kanalı üzerinden yeşil izolasyonu sağlandı. Dinamik Otsu eklendi.
 
-## Aşama 2: Üst Üste Binen Yaprakları Ayırma (Watershed & Distance Transform) - [SIRADA]
+## Aşama 2: Üst Üste Binen Yaprakları Ayırma (Watershed & Distance Transform) - [TAMAMLANDI]
 *   **Çözüm:** 
     1.  `cv::distanceTransform` ile yaprakların merkezlerini bulup "tohum" (seed) noktaları belirlemek.
     2.  `cv::watershed` ile bu tohumlardan başlayarak sınırları yaprakların birleşim noktalarına kadar genişletmek.
 *   **Hedef:** Birbirine değen yaprakları jilet gibi ayırmak.
+*   **Not:** `src/core/leaf_boundary.cpp` içindeki pipeline'da 4-7. adımlar (distance map,
+    foreground seeds, watershed markers, final edges) olarak zaten uygulandı.
 
 ## Aşama 3: Doku ve Hastalık Analizi (GLCM / Gabor Filters)
 *   **Gelişmiş:** Yaprak üzerindeki hastalık lekelerini sadece renk değil, **Doku (Texture)** analizi ile (Gabor filtreleri) ayırmak.

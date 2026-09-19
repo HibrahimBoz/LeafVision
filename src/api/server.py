@@ -6,13 +6,18 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 import base64
+import tempfile
+import uuid
 
 # Kök dizini ve modül yollarını ekle
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 sys.path.append(root_dir)
 
 # OpenCV DLL dizinini sisteme tanıt (Temiz Mimari - DLL kopyalamadan)
-opencv_bin_dir = "C:/Users/Halil/Downloads/Programs/opencv/build/x64/vc16/bin"
+# Baska bir makinede OPENCV_BIN_DIR ortam degiskeniyle gecersiz kilinabilir.
+opencv_bin_dir = os.environ.get(
+    "OPENCV_BIN_DIR", "C:/Users/Halil/Downloads/Programs/opencv/build/x64/vc16/bin"
+)
 if os.path.exists(opencv_bin_dir):
     if hasattr(os, 'add_dll_directory'):
         os.add_dll_directory(opencv_bin_dir)
@@ -20,8 +25,10 @@ if os.path.exists(opencv_bin_dir):
         os.environ['PATH'] = opencv_bin_dir + os.pathsep + os.environ['PATH']
 
 # Visual Studio CMake derleme dizinlerini Python'un arama yoluna (sys.path) ekle
-build_dir_debug = os.path.join(root_dir, 'out', 'build', 'x64-Debug')
-build_dir_release = os.path.join(root_dir, 'out', 'build', 'x64-Release')
+# (CMakeSettings.json buildRoot'u src/core altinda tanimli, bu yuzden derleme
+# ciktisi src/core/out/build altinda olusur)
+build_dir_debug = os.path.join(root_dir, 'src', 'core', 'out', 'build', 'x64-Debug')
+build_dir_release = os.path.join(root_dir, 'src', 'core', 'out', 'build', 'x64-Release')
 
 if os.path.exists(build_dir_debug):
     sys.path.append(build_dir_debug)
@@ -62,7 +69,8 @@ async def process_image(file: UploadFile = File(...)):
         return JSONResponse(status_code=400, content={"message": "Geçersiz resim dosyası."})
     
     # Geçici dosyaya kaydet (C++ motoru dosya yolu beklediği için)
-    temp_path = "temp_process.jpg"
+    # Eşzamanlı isteklerin birbirini ezmemesi için istek başına benzersiz ad kullan.
+    temp_path = os.path.join(tempfile.gettempdir(), f"leafvision_{uuid.uuid4().hex}.jpg")
     cv2.imwrite(temp_path, img)
     
     try:
