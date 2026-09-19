@@ -26,13 +26,13 @@ bw = justGreen > 30;
 close all
 bw1 = bwareaopen(bw, 30);
 %imshow(bw1)
-% morfolojik dzeltme
-se = strel('disk', 10); % resimdeki yapran byklne gre deer deimeli, byk deer ayrntlar bozuyor
+% morfolojik düzeltme
+se = strel('disk', 10); % resimdeki yapraðýn büyüklüðüne göre deðer deðiþmeli, büyük deðer ayrýntýlarý bozuyor
 bw2 = imclose(bw1, se);
 %imshow(bw2)
-%% yeil ksm ayrlm resmin binary grnts ile birleimi
-%bw3 = im2bw(bw,0.01); 
-%bw3 = bw3 | bw2
+%% yeþil kýsmý ayrýlmýþ resmin binary görüntüsü ile birleþimi
+bw3 = im2bw(bw,0.01); 
+bw3 = bw3 | bw2
 bw3 = imclose(bw3, se);%morfolojik kapama
 imshow(bw3)
 %% Filling holes of the image
