@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeafVision | AI Powered Boundary Detection</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-hover: #45a049;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(76, 175, 80, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.1) 0%, transparent 25%);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(to right, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.05em;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .drop-zone:hover, .drop-zone.drag-over {
+            border-color: var(--primary);
+            background: rgba(76, 175, 80, 0.05);
+        }
+
+        .drop-zone p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin: 1rem 0;
+        }
+
+        .btn-upload {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-upload:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .preview-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            display: none;
+        }
+
+        .preview-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .preview-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary);
+        }
+
+        .preview-box h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            text-align: left;
+            border-left: 3px solid var(--primary);
+            padding-left: 8px;
+        }
+
+        .img-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .step-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.8rem;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>LeafVision</h1>
+        <p>C++ ile Optimize Edilmiş Yaprak Analiz Platformu</p>
+    </div>
+
+    <div class="main-container">
+        <div class="card">
+            <div id="drop-zone" class="drop-zone">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); margin-bottom: 1rem;">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p>Resmi buraya sürükleyin veya dosya seçin</p>
+                <button class="btn-upload" onclick="document.getElementById('file-input').click()">Dosya Seç</button>
+                <input type="file" id="file-input" style="display: none" accept="image/*">
+            </div>
+
+            <div id="loading">Sihir gerçekleşiyor (C++ motoru devrede)...</div>
+
+            <div id="preview-area" class="preview-area">
+                <!-- Pipeline adımları buraya dinamik dolacak -->
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2026 LeafVision Project | Faz 3: Visual Pipeline Embedded
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const previewArea = document.getElementById('preview-area');
+        const loading = document.getElementById('loading');
+
+        const STEP_NAMES = {
+            "1_original": "Orijinal Görüntü",
+            "2_color_mask": "LAB + ExG Maskesi",
+            "3_cleaned_mask": "Morfolojik Temizlik",
+            "4_distance_map": "Mesafe Dönüşümü",
+            "5_foreground_seeds": "Watershed Önplan Tohumları",
+            "6_watershed_markers": "Segmentasyon Havzaları",
+            "7_final_edges": "Sonuç (Jilet Gibi Kenarlar)"
+        };
+
+        const STEP_DESCS = {
+            "1_original": "Analiz edilecek ham yaprak görüntüsü.",
+            "2_color_mask": "Yeşil tonlarını topraktan ayırmak için renk analizi yapıldı.",
+            "3_cleaned_mask": "Küçük gürültüler (böcek, taş vb.) morfoloji ile silindi.",
+            "4_distance_map": "Yaprakların merkez noktalarını belirlemek için mesafe haritası çıkarıldı.",
+            "5_foreground_seeds": "Elde edilen verilerle kesin yaprak bölgeleri belirlendi.",
+            "6_watershed_markers": "Üst üste binen bölgeleri ayırmak için tohumlar ekildi.",
+            "7_final_edges": "Watershed algoritması ile yaprağın asıl sınırları jilet gibi kesildi."
+        };
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files), false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            handleFiles(dt.files);
+        }
+
+        async function handleFiles(files) {
+            if (files.length === 0) return;
+            const file = files[0];
+            
+            const formData = new FormData();
+            formData.append('file', file);
+
+            loading.style.display = 'block';
+            previewArea.innerHTML = '';
+            previewArea.style.display = 'none';
+            
+            try {
+                const response = await fetch('/process', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    previewArea.style.display = 'grid';
+                    
+                    // Adımları sıralı bir şekilde oluştur
+                    Object.keys(data.pipeline).sort().forEach(key => {
+                        const stepCard = document.createElement('div');
+                        stepCard.className = 'preview-box';
+                        stepCard.innerHTML = `
+                            <h3>${STEP_NAMES[key] || key}</h3>
+                            <div class="img-container">
+                                <img src="${data.pipeline[key]}" alt="${key}">
+                            </div>
+                            <p class="step-desc">${STEP_DESCS[key] || "İşlem adımı başarıyla uygulandı."}</p>
+                        `;
+                        previewArea.appendChild(stepCard);
+                    });
+                } else {
+                    alert('Hata: ' + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Sunucuya bağlanılamadı.');
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

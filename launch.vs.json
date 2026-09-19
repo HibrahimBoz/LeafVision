@@ -1,0 +1,29 @@
+{
+  "version": "0.2.1",
+  "configurations": [
+    {
+      "type": "default",
+      "project": "src\\core\\CMakeLists.txt",
+      "projectTarget": "leaf_vision",
+      "name": "1. Sadece C++ Motorunu Derle"
+    },
+    {
+      "type": "python",
+      "name": "2. FastAPI Sunucusunu Başlat (API)",
+      "project": "src\\api\\server.py",
+      "interpreter": "${workspaceRoot}\\env\\Scripts\\python.exe",
+      "env": {
+        "PYTHONPATH": "${workspaceRoot};${workspaceRoot}\\out\\build\\x64-Debug"
+      }
+    },
+    {
+      "type": "python",
+      "name": "3. Yaprak Analizi Test Et (Script)",
+      "project": "src\\scripts\\main.py",
+      "interpreter": "${workspaceRoot}\\env\\Scripts\\python.exe",
+      "env": {
+        "PYTHONPATH": "${workspaceRoot};${workspaceRoot}\\out\\build\\x64-Debug"
+      }
+    }
+  ]
+}

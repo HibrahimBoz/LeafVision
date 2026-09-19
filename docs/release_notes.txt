@@ -1,0 +1,15 @@
+LeafVision Release Notes
+=======================
+
+v1.2.0 - 2026-03-17
+-------------------
+* [GELİŞTİRME] MATLAB prototipinden C++ Core + Python API hibrit mimarisine geçiş tamamlandı.
+* [PERFORMANS] Görüntü işleme motoru OpenCV C++ 17 ile yeniden yazıldı, ~10x performans artışı sağlandı.
+* [API] FastAPI entegrasyonu ile web tabanlı analiz desteği eklendi.
+* [BRIDGE] Pybind11 kullanılarak C++ ve Python katmanları birbirine bağlandı.
+* [DÖKÜMANTASYON] Yeni mimari şeması ve dönüşüm analizi eklendi.
+
+v1.0.0 - MATLAB Prototip
+------------------------
+* Temel yaprak kenar belirleme algoritması geliştirildi.
+* Renk ayrıştırma ve morfolojik filtreleme test edildi.

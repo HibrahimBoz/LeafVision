@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+python-multipart
+pybind11
+opencv-python
+matplotlib

@@ -17,8 +17,9 @@ src/core/out/
 # Visual Studio
 .vs/
 
-# Vendored third-party source (cloned separately, not project history)
+# Vendored third-party source/binaries (fetched separately, not project history)
 extern/pybind11/
+extern/opencv_world4120.dll
 
 # Runtime temp files
 temp_process.jpg

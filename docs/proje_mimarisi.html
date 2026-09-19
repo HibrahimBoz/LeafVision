@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>LeafVision Proje Mimarisi & Dönüşüm Analizi</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #81C784;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text: #e0e0e0;
+            --accent: #FFC107;
+        }
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px; line-height: 1.6; }
+        .container { max-width: 1100px; margin: auto; background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        h1 { color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 15px; font-size: 2.5em; }
+        h2 { color: var(--secondary); margin-top: 40px; border-left: 5px solid var(--primary); padding-left: 15px; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 25px 0; background: #252525; border-radius: 8px; overflow: hidden; }
+        .comparison-table th, .comparison-table td { padding: 15px; text-align: left; border-bottom: 1px solid #333; }
+        .comparison-table th { background: #333; color: var(--primary); }
+        .diagram { background: #f8f9fa; padding: 30px; border-radius: 12px; margin: 30px 0; text-align: center; border: 2px solid var(--primary); }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .tech-tag { background: #333; color: var(--secondary); padding: 8px 16px; border-radius: 20px; font-weight: bold; border: 1px solid #444; }
+        .code-block { background: #000; padding: 15px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 0.9em; overflow-x: auto; color: #d4d4d4; border-left: 4px solid var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LeafVision: Görüntü İşleme Evrimi</h1>
+        <p>LeafVision, laboratuvar ortamındaki MATLAB prototipinden, gerçek zamanlı üretim ortamına uygun, yüksek performanslı bir <strong>C++/Python Hibrit API</strong> servisine dönüşmüştür.</p>
+
+        <h2>1. Dönüşüm Analizi: MATLAB vs. Modern Mimari</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Özellik</th>
+                    <th>Eski Yapı (MATLAB)</th>
+                    <th>Yeni Yapı (C++ Core + Python API)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Hız</strong></td>
+                    <td>Yavaş / Script tabanlı</td>
+                    <td>Çok Hızlı / Derlenmiş C++ (OpenCV SIMD)</td>
+                </tr>
+                <tr>
+                    <td><strong>Dağıtım</strong></td>
+                    <td>MATLAB Runtime Gerektirir</td>
+                    <td>Self-contained / Docker uyumlu</td>
+                </tr>
+                <tr>
+                    <td><strong>Arayüz</strong></td>
+                    <td>Sadece MATLAB Figure</td>
+                    <td>Modern Web Arayüzü (FastAPI + HTML5)</td>
+                </tr>
+                <tr>
+                    <td><strong>Genişletilebilirlik</strong></td>
+                    <td>Sınırlı (Toolbox bağımlı)</td>
+                    <td>Sınırsız (C++ Kütüphaneleri & Python Ekosistemi)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>2. Teknik Mimari (Blok Diyagram)</h2>
+        <div class="diagram">
+            <img src="https://mermaid.ink/svg/pako:eNqNkk1Lw0AQhv-KmKdN6MW0F6_SShXqLUEPa2vTSrI10yTZRInov_cmXyGIl_XOfmbe99ndV6-N0yC15Wp6R2eN6fV6vC3L_Y4_Wp_v7G_99vM9_XwM8H-02T_mK-09_N-I2MAt-W6L5aUpM0Gf-pY6D28LpTtt3r8a7fW32q37unre_v1185G_D09tZ67l_7A12g3eXfO10U2l27uclh97Uq9XU7fT8t97pA19U1e9nU9p_fS1jU3b75mS40lToen_UvX6I4x2O1Tz_gSlnTbe-v4Z-h-iX6NbGFrf38JpC-m7r_0G38902lZpX68O0N_uVofI" alt="Architecture Diagram">
+            <p style="color: #666; font-size: 0.8em; margin-top: 10px;">Modern Hibrit Görüntü İşleme Boru Hattı</p>
+        </div>
+
+        <h2>3. Algoritma Karşılaştırması</h2>
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+                <h3 style="color: var(--accent);">MATLAB Mantığı</h3>
+                <div class="code-block">
+justGreen = g - r/2 - b/2;<br>
+bw = justGreen > 30;<br>
+bw1 = bwareaopen(bw, 30);<br>
+fillResim = imfill(bw, 'holes');
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <h3 style="color: var(--primary);">C++ OpenCV Mantığı</h3>
+                <div class="code-block">
+cv::Mat justGreen = g_f - (r_f/2) - (b_f/2);<br>
+cv::threshold(justGreen, bw, 30, 255, ...);<br>
+cv::morphologyEx(bw, bw_cl, MORPH_CLOSE, se);<br>
+cv::drawContours(..., FILLED);
+                </div>
+            </div>
+        </div>
+
+        <h2>4. Teknoloji Yığını</h2>
+        <div class="tech-stack">
+            <div class="tech-tag">C++ 17 (Core Engine)</div>
+            <div class="tech-tag">OpenCV 4.x (Vision)</div>
+            <div class="tech-tag">Pybind11 (Bridge)</div>
+            <div class="tech-tag">Python 3.14 (API)</div>
+            <div class="tech-tag">FastAPI (Web Framework)</div>
+        </div>
+    </div>
+</body>
+</html>
+
