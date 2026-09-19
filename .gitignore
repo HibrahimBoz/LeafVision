@@ -1,0 +1,24 @@
+# Python virtual environment
+env/
+__pycache__/
+*.pyc
+
+# Build artifacts (CMake / MSVC)
+build/
+out/
+src/core/out/
+*.pyd
+*.obj
+*.pdb
+*.lib
+*.exp
+*.ilk
+
+# Visual Studio
+.vs/
+
+# Vendored third-party source (cloned separately, not project history)
+extern/pybind11/
+
+# Runtime temp files
+temp_process.jpg
